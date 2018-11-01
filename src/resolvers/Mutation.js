@@ -13,7 +13,7 @@ async function signup(parent, args, context, info) {
   return { token, user };
 }
 
-async function login(parent, args, context, info) {
+async function login(parent, args, context) {
   const user = await context.db.query.user({ where: { email: args.email } }, ' { id password } ');
   if (!user) {
     throw new Error('No such user found');
@@ -64,9 +64,31 @@ async function vote(parents, args, context, info) {
   );
 }
 
+async function joinEmailList(parents, args, context) {
+  // First check to see if the email already exists
+  const user = await context.db.query.user({ where: { email: args.email } }, ' { emailListMember } ');
+  if (!user) {
+    await context.db.mutation.createUser({
+      data: { ...args, emailListMember: true },
+    });
+    return true;
+  }
+
+  if (!user.emailListMember) {
+    await context.db.mutation.updateUser({
+      data: { emailListMember: true },
+      where: { email: args.email },
+    });
+    return true;
+  }
+
+  return false;
+}
+
 module.exports = {
   signup,
   login,
   post,
   vote,
+  joinEmailList,
 };

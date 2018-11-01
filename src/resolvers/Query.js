@@ -1,3 +1,5 @@
+
+
 async function feed(parent, args, context, info) {
   const where = args.filter
     ? {
@@ -32,6 +34,15 @@ async function feed(parent, args, context, info) {
     linkIds: queriedLinks.map(link => link.id),
   };
 }
+
+// async function emailList(parent, args, context) {
+//   // const where = `{
+//   //   emailListCover
+//   // }
+//   // `;
+//   //
+//   // const userList
+// }
 
 module.exports = {
   feed,

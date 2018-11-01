@@ -1,5 +1,5 @@
 # source: https://us1.prisma.sh/babak-chehraz-c82cf9/database/dev
-# timestamp: Mon Oct 29 2018 19:00:14 GMT-0700 (PDT)
+# timestamp: Wed Oct 31 2018 17:38:46 GMT-0700 (PDT)
 
 type AggregateLink {
   count: Int!
@@ -432,11 +432,12 @@ type Subscription {
 
 type User implements Node {
   id: ID!
-  name: String!
+  name: String
   email: String!
-  password: String!
+  password: String
   links(where: LinkWhereInput, orderBy: LinkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Link!]
   votes(where: VoteWhereInput, orderBy: VoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Vote!]
+  emailListMember: Boolean
 }
 
 """A connection to a list of items."""
@@ -450,9 +451,10 @@ type UserConnection {
 }
 
 input UserCreateInput {
-  name: String!
+  name: String
   email: String!
-  password: String!
+  password: String
+  emailListMember: Boolean
   links: LinkCreateManyWithoutPostedByInput
   votes: VoteCreateManyWithoutUserInput
 }
@@ -468,16 +470,18 @@ input UserCreateOneWithoutVotesInput {
 }
 
 input UserCreateWithoutLinksInput {
-  name: String!
+  name: String
   email: String!
-  password: String!
+  password: String
+  emailListMember: Boolean
   votes: VoteCreateManyWithoutUserInput
 }
 
 input UserCreateWithoutVotesInput {
-  name: String!
+  name: String
   email: String!
-  password: String!
+  password: String
+  emailListMember: Boolean
   links: LinkCreateManyWithoutPostedByInput
 }
 
@@ -499,6 +503,8 @@ enum UserOrderByInput {
   email_DESC
   password_ASC
   password_DESC
+  emailListMember_ASC
+  emailListMember_DESC
   updatedAt_ASC
   updatedAt_DESC
   createdAt_ASC
@@ -507,9 +513,10 @@ enum UserOrderByInput {
 
 type UserPreviousValues {
   id: ID!
-  name: String!
+  name: String
   email: String!
-  password: String!
+  password: String
+  emailListMember: Boolean
 }
 
 type UserSubscriptionPayload {
@@ -555,6 +562,7 @@ input UserUpdateInput {
   name: String
   email: String
   password: String
+  emailListMember: Boolean
   links: LinkUpdateManyWithoutPostedByInput
   votes: VoteUpdateManyWithoutUserInput
 }
@@ -563,6 +571,7 @@ input UserUpdateManyMutationInput {
   name: String
   email: String
   password: String
+  emailListMember: Boolean
 }
 
 input UserUpdateOneRequiredWithoutVotesInput {
@@ -585,6 +594,7 @@ input UserUpdateWithoutLinksDataInput {
   name: String
   email: String
   password: String
+  emailListMember: Boolean
   votes: VoteUpdateManyWithoutUserInput
 }
 
@@ -592,6 +602,7 @@ input UserUpdateWithoutVotesDataInput {
   name: String
   email: String
   password: String
+  emailListMember: Boolean
   links: LinkUpdateManyWithoutPostedByInput
 }
 
@@ -774,6 +785,10 @@ input UserWhereInput {
 
   """All values not ending with the given string."""
   password_not_ends_with: String
+  emailListMember: Boolean
+
+  """All values that are not equal to given value."""
+  emailListMember_not: Boolean
   links_every: LinkWhereInput
   links_some: LinkWhereInput
   links_none: LinkWhereInput
